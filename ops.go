@@ -9,7 +9,7 @@ import (
 )
 
 // ops is a list of all supported operations and their function for easy execution.
-var ops = map[string]func(s *stackWrapper){
+var ops = map[string]func(s *stack){
 	"ADD":     add,
 	"SUB":     sub,
 	"EQ":      equal,
@@ -22,7 +22,7 @@ var ops = map[string]func(s *stackWrapper){
 // them off the stack, converting to int and
 // performing the maths.
 // It will then push the result onto the stack.
-func add(stack *stackWrapper) {
+func add(stack *stack) {
 	a := stack.pop()
 	b := stack.pop()
 	n1, err := strconv.Atoi(a)
@@ -43,7 +43,7 @@ func add(stack *stackWrapper) {
 // This will subtract in the order of the expression, so,
 // given 10 3 SUB it will perform 10-3.
 // It will then push the result onto the stack.
-func sub(stack *stackWrapper) {
+func sub(stack *stack) {
 	a := stack.pop()
 	b := stack.pop()
 	n1, err := strconv.Atoi(a)
@@ -61,7 +61,7 @@ func sub(stack *stackWrapper) {
 // equal will check the last to items on the stack are equal.
 // It will return 1 if TRUE and 0 if FALSE.
 // The result will be pushed onto the stack.
-func equal(stack *stackWrapper) {
+func equal(stack *stack) {
 	if stack.pop() == stack.pop() {
 		stack.push("1")
 		return
@@ -72,7 +72,7 @@ func equal(stack *stackWrapper) {
 // notequal will check the last to items on the stack are not equal.
 // It will return 1 if TRUE and 0 if FALSE.
 // The result will be pushed onto the stack.
-func notequal(stack *stackWrapper) {
+func notequal(stack *stack) {
 	if stack.pop() != stack.pop() {
 		stack.push("1")
 		return
@@ -83,7 +83,7 @@ func notequal(stack *stackWrapper) {
 // hash256 will hash the current top value in the stack
 // using the sha256 algo.
 // The result is pushed onto the stack.
-func hash256(stack *stackWrapper) {
+func hash256(stack *stack) {
 	s := stack.pop()
 	h := sha256.Sum256([]byte(s))
 	stack.push(fmt.Sprintf("%x", h))
@@ -91,7 +91,7 @@ func hash256(stack *stackWrapper) {
 
 // duplicate will take the top item in the stack and duplicate it.
 // It will then push this duplicate value to the top of the stack.
-func duplicate(stack *stackWrapper) {
+func duplicate(stack *stack) {
 	s := stack.pop()
 	stack.push(s)
 	stack.push(s)
